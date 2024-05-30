@@ -7,7 +7,7 @@
  
 module "vwan_with_vhub" {
   source                         = "Azure/avm-ptn-virtualwan/azurerm"
-  version = "0.4.0"
+  version = "0.5.0"
   resource_group_name            = "pp-vwan-rg"
   create_resource_group = true
   location                       = "Switzerland North"
@@ -30,6 +30,17 @@ module "vwan_with_vhub" {
       
       tags = {
         "location" = "SWIN"
+      }
+    }
+    franc-vhub = {
+      name           = "franc_vhub"
+      location       = "France Central"
+      resource_group = "pp-vwan-rg"
+      hub_routing_preference = "ASPath"
+      address_prefix = "10.105.10.0/24"
+      
+      tags = {
+        "location" = "FRANC"
       }
     }
   }
@@ -90,6 +101,18 @@ module "vwan_with_vhub" {
       "location" = "SWIN"
     }
   }
+  "franc-vhub-firewall" = {
+    name            = "franc-vhub-firewall"
+    virtual_hub_key = "franc-vhub"
+    location        = "France Central"
+    resource_group  = "pp-vwan-rg"
+    sku_name             = "AZFW_Hub"
+    sku_tier        = "Standard"
+    firewall_policy_id = module.fwpolicy.fw_policy_id
+    tags = {
+      "location" = "FRANC"
+    }
+  }
 }
 
 routing_intents = {
@@ -106,6 +129,23 @@ routing_intents = {
         name                  = "swin-vhub-routing-policy-internet"
         destinations          = ["PrivateTraffic"]
         next_hop_firewall_key = "swin-vhub-firewall"
+        }
+      ]
+     
+    }
+    "franc-vhub-routing-intent" = {
+      name            = "franc-routing-intent"
+      virtual_hub_key = "franc-vhub"
+      routing_policies = [
+        {
+        name                  = "franc-vhub-routing-policy-private"
+        destinations          = ["Internet"]
+        next_hop_firewall_key = "franc-vhub-firewall"
+        },
+        {
+        name                  = "franc-vhub-routing-policy-internet"
+        destinations          = ["PrivateTraffic"]
+        next_hop_firewall_key = "franc-vhub-firewall"
         }
       ]
      
