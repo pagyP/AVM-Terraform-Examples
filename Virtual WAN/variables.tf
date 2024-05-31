@@ -86,9 +86,9 @@ variable "network_rule_collection" {
   default = []
 }
 
-variable "fw_policy_tags" {
-  type = map(any)
-}
+# variable "fw_policy_tags" {
+#   type = map(any)
+# }
 
 variable "threat_intelligence_allowlist" {
   description = "nested block: NestingList, min items: 0, max items: 1"

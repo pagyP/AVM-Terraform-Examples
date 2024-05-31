@@ -1,4 +1,23 @@
+locals {
+  vnet_connections = {
+    vnet-swin-001 = {
+      virtual_network_connection_name = "vnet-conn-vnet-swin-001-connection"
+      name                            = "vnet-swin-001-connection"
+      virtual_hub_key                 = "swin-vhub"
+      remote_virtual_network_id       = module.swin-vnet-001.resource_id
+      //internet_security_enabled       = true
+    }
+    vnet-franc-001 = {
+      virtual_network_connection_name = "vnet-conn-vnet-franc-001-connection"
+      name                            = "vnet-franc-001-connection"
+      virtual_hub_key                 = "franc-vhub"
+      remote_virtual_network_id       = module.franc-vnet-001.resource_id
+      //internet_security_enabled       = true
+    }
+ }
+}
 
+//TODO Remove the hardcoded values and replace with variables/locals
 
 # resource azurerm_resource_group "vwan-rg" {
 #     name     = "pp-vwan-rg"
@@ -16,6 +35,7 @@ module "vwan_with_vhub" {
   allow_branch_to_branch_traffic = true
   //bgp_community                  = "12076:51010"
   type                           = "Standard"
+  virtual_network_connections = local.vnet_connections
   virtual_wan_tags = {
     environment = "dev"
     deployment  = "terraform"

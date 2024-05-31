@@ -1,6 +1,23 @@
-Uses the AVM pattern module Azure Virtual WAN https://registry.terraform.io/modules/Azure/avm-ptn-virtualwan/azurerm/latest
-- At the moment I'm using sub-modules to create a firewall policy and rules within the policy, the above module does not support doing that at this time
-- At the time of writing this (22nd April 24) the above module does not support the association of firewall policy to the Virtual WAN hub - a PR has been submitted to the module to add this functionality https://github.com/Azure/terraform-azurerm-avm-ptn-virtualwan/pull/53 
+
+
+# Azure Virtual WAN
 - TODO:
     - Add diagram of what this deploys
     - Uage instructions
+    - Remove hard coded values and replace with variables/locals
+    - Swap my modules for Azure Verified Modules
+    - Add virtual machines in spoke vnets
+    - Add shared vnet for DNS resolver
+    - Add shared vnet for Azure Bastion
+  
+
+Uses the following modules from Azure Verified Modules https://aka.ms/avm:
+
+- https://registry.terraform.io/modules/Azure/avm-ptn-virtualwan/azurerm/latest
+
+- https://registry.terraform.io/modules/Azure/avm-res-network-virtualnetwork/azurerm/latest
+
+Uses modules that I have written myself:
+
+Azure Firewall Policy 
+Azure Firewall Rule Collection Group

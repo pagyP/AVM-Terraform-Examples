@@ -24,7 +24,7 @@ module "fwpolicy" {
   threat_intelligence_mode = "Alert"
   // Below line only needed when a dns server is defined
   //dns                           = var.dns
-  tags                          = var.fw_policy_tags
+  //tags                          = var.fw_policy_tags
   threat_intelligence_allowlist = var.threat_intelligence_allowlist
 }
 
