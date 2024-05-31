@@ -11,7 +11,7 @@ resource "azurerm_resource_group" "fw-pol-rg" {
 #   name                = module.naming.firewall_policy.name_unique
 #   location            = azurerm_resource_group.fw-pol-rg.location
 #   resource_group_name = azurerm_resource_group.fw-pol-rg.name
-  
+
 # }
 
 module "fwpolicy" {

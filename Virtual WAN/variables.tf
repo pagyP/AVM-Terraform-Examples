@@ -1,6 +1,6 @@
 variable "priority" {
   description = "The priority of the rule collection group"
-  default = 200
+  default     = 200
 
 }
 

@@ -14,7 +14,7 @@ locals {
       remote_virtual_network_id       = module.franc-vnet-001.resource_id
       //internet_security_enabled       = true
     }
- }
+  }
 }
 
 //TODO Remove the hardcoded values and replace with variables/locals
@@ -23,18 +23,18 @@ locals {
 #     name     = "pp-vwan-rg"
 #     location = "Switzerland North"
 #   }
- 
+
 module "vwan_with_vhub" {
   source                         = "Azure/avm-ptn-virtualwan/azurerm"
-  version = "0.5.0"
+  version                        = "0.5.0"
   resource_group_name            = "pp-vwan-rg"
-  create_resource_group = true
+  create_resource_group          = true
   location                       = "Switzerland North"
   virtual_wan_name               = "pp-vwan-01"
   disable_vpn_encryption         = false
   allow_branch_to_branch_traffic = true
   //bgp_community                  = "12076:51010"
-  type                           = "Standard"
+  type                        = "Standard"
   virtual_network_connections = local.vnet_connections
   virtual_wan_tags = {
     environment = "dev"
@@ -42,23 +42,23 @@ module "vwan_with_vhub" {
   }
   virtual_hubs = {
     swin-vhub = {
-      name           = "swin_vhub"
-      location       = "Switzerland North"
-      resource_group = "pp-vwan-rg"
+      name                   = "swin_vhub"
+      location               = "Switzerland North"
+      resource_group         = "pp-vwan-rg"
       hub_routing_preference = "ASPath"
-      address_prefix = "10.100.10.0/24"
-      
+      address_prefix         = "10.100.10.0/24"
+
       tags = {
         "location" = "SWIN"
       }
     }
     franc-vhub = {
-      name           = "franc_vhub"
-      location       = "France Central"
-      resource_group = "pp-vwan-rg"
+      name                   = "franc_vhub"
+      location               = "France Central"
+      resource_group         = "pp-vwan-rg"
       hub_routing_preference = "ASPath"
-      address_prefix = "10.105.10.0/24"
-      
+      address_prefix         = "10.105.10.0/24"
+
       tags = {
         "location" = "FRANC"
       }
@@ -106,71 +106,71 @@ module "vwan_with_vhub" {
   #   }
   # }
 
-  
+
 
   firewalls = {
-  "swin-vhub-firewall" = {
-    name            = "swin-vhub-firewall"
-    virtual_hub_key = "swin-vhub"
-    location        = "Switzerland North"
-    resource_group  = "pp-vwan-rg"
-    sku_name             = "AZFW_Hub"
-    sku_tier        = "Standard"
-    firewall_policy_id = module.fwpolicy.fw_policy_id
-    tags = {
-      "location" = "SWIN"
+    "swin-vhub-firewall" = {
+      name               = "swin-vhub-firewall"
+      virtual_hub_key    = "swin-vhub"
+      location           = "Switzerland North"
+      resource_group     = "pp-vwan-rg"
+      sku_name           = "AZFW_Hub"
+      sku_tier           = "Standard"
+      firewall_policy_id = module.fwpolicy.fw_policy_id
+      tags = {
+        "location" = "SWIN"
+      }
+    }
+    "franc-vhub-firewall" = {
+      name               = "franc-vhub-firewall"
+      virtual_hub_key    = "franc-vhub"
+      location           = "France Central"
+      resource_group     = "pp-vwan-rg"
+      sku_name           = "AZFW_Hub"
+      sku_tier           = "Standard"
+      firewall_policy_id = module.fwpolicy.fw_policy_id
+      tags = {
+        "location" = "FRANC"
+      }
     }
   }
-  "franc-vhub-firewall" = {
-    name            = "franc-vhub-firewall"
-    virtual_hub_key = "franc-vhub"
-    location        = "France Central"
-    resource_group  = "pp-vwan-rg"
-    sku_name             = "AZFW_Hub"
-    sku_tier        = "Standard"
-    firewall_policy_id = module.fwpolicy.fw_policy_id
-    tags = {
-      "location" = "FRANC"
-    }
-  }
-}
 
-routing_intents = {
+  routing_intents = {
     "swin-vhub-routing-intent" = {
       name            = "swin-routing-intent"
       virtual_hub_key = "swin-vhub"
       routing_policies = [
         {
-        name                  = "swin-vhub-routing-policy-private"
-        destinations          = ["Internet"]
-        next_hop_firewall_key = "swin-vhub-firewall"
+          name                  = "swin-vhub-routing-policy-private"
+          destinations          = ["Internet"]
+          next_hop_firewall_key = "swin-vhub-firewall"
         },
         {
-        name                  = "swin-vhub-routing-policy-internet"
-        destinations          = ["PrivateTraffic"]
-        next_hop_firewall_key = "swin-vhub-firewall"
+          name                  = "swin-vhub-routing-policy-internet"
+          destinations          = ["PrivateTraffic"]
+          next_hop_firewall_key = "swin-vhub-firewall"
         }
       ]
-     
+
     }
     "franc-vhub-routing-intent" = {
       name            = "franc-routing-intent"
       virtual_hub_key = "franc-vhub"
       routing_policies = [
         {
-        name                  = "franc-vhub-routing-policy-private"
-        destinations          = ["Internet"]
-        next_hop_firewall_key = "franc-vhub-firewall"
+          name                  = "franc-vhub-routing-policy-private"
+          destinations          = ["Internet"]
+          next_hop_firewall_key = "franc-vhub-firewall"
         },
         {
-        name                  = "franc-vhub-routing-policy-internet"
-        destinations          = ["PrivateTraffic"]
-        next_hop_firewall_key = "franc-vhub-firewall"
+          name                  = "franc-vhub-routing-policy-internet"
+          destinations          = ["PrivateTraffic"]
+          next_hop_firewall_key = "franc-vhub-firewall"
         }
       ]
-     
+
     }
   }
 
-  
+
 }
