@@ -26,7 +26,7 @@ locals {
 
 module "vwan_with_vhub" {
   source                         = "Azure/avm-ptn-virtualwan/azurerm"
-  version                        = "0.5.0"
+  version                        = "0.11.0"
   resource_group_name            = "pp-vwan-rg"
   create_resource_group          = true
   location                       = "Switzerland North"
