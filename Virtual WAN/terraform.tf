@@ -3,19 +3,20 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.7"
+      version = "~> 4.0"
     }
     random = {
       source  = "hashicorp/random"
-      version = "~> 3.5"
+      version = "~> 3.6"
     }
   }
 }
 
 provider "azurerm" {
+    subscription_id = "f8bf7adc-eeed-4320-b9e4-b30e582ef115"
   features {
     resource_group {
-      prevent_deletion_if_contains_resources = false # This is to handle MCAPS or other policy driven resource creation.
+      prevent_deletion_if_contains_resources = false
     }
   }
 }
