@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "vnetsrg" {
   name     = "vnets-rg"
-  location = "austaliaeast"
+  location = "australiaeast"
 }
 
 module "vnet-aue-east" {

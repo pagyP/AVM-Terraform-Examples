@@ -6,7 +6,6 @@ resource "azurerm_resource_group" "example" {
 module "firewall_policy" {
   source  = "Azure/avm-res-network-firewallpolicy/azurerm"
   version = "0.3.3"
-  # insert the 3 required variables here
   resource_group_name = azurerm_resource_group.example.name
   location            = azurerm_resource_group.example.location
   name                = "avm-fw-policy"
@@ -17,7 +16,6 @@ module "firewall_policy" {
 }
 
 module "rule_collection_group" {
-  #source = "../../modules/rule_collection_groups"
   source             = "Azure/avm-res-network-firewallpolicy/azurerm//modules/rule_collection_groups"
   firewall_policy_rule_collection_group_firewall_policy_id = module.firewall_policy.resource.id
   firewall_policy_rule_collection_group_name               = "NetworkRuleCollectionGroup"
